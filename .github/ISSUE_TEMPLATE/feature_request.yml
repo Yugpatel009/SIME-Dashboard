@@ -1,0 +1,46 @@
+name: Feature Request / Scenario Idea
+description: Suggest an enhancement, new feature, or new MITRE ATT&CK scenario
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature or improvement for SIEM Dashboard!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: Is your feature request related to a problem or limitation?
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution / Enhancement
+      description: Describe what you would like to happen and how it works.
+      placeholder: "Provide a detailed description of the proposed feature or scenario..."
+    validations:
+      required: true
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: Feature Category
+      options:
+        - New MITRE ATT&CK Scenario Playbook
+        - New Correlation Rule Type
+        - Alert Notification Channel (Slack, Discord, Email, Webhook)
+        - Frontend UI / Visualization Enhancement
+        - Performance & Scalability
+        - Documentation / Learn Walkthrough
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative solutions or features you've considered?
+    validations:
+      required: false

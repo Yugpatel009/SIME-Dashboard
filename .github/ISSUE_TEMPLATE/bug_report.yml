@@ -1,0 +1,63 @@
+name: Bug Report
+description: Report a reproducible bug or issue
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please provide as much detail as possible.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this behavior?
+      placeholder: |
+        1. Start the stack with `docker compose -f dev.compose.yml up`
+        2. Navigate to '...'
+        3. Click on '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Output
+      description: Paste any relevant terminal logs or browser console errors here.
+      render: shell
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      options:
+        - Backend API / Flask
+        - Frontend / React Dashboard
+        - Correlation Rules Engine
+        - Attack Scenario Simulation
+        - Docker Compose / Deployment
+        - Documentation / Learn Modules
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Info
+      description: OS version, Docker version, Python/Node versions, browser.
+      placeholder: Windows 11 / Ubuntu 22.04 / Docker 24.0 / Chrome 120
+    validations:
+      required: false

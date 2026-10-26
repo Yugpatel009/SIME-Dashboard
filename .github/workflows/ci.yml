@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  backend-lint:
+    name: Backend Lint (Ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff Lint
+        run: ruff check backend/app
+
+  frontend-check:
+    name: Frontend Lint & Typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Biome Lint
+        run: pnpm lint
+
+      - name: TypeScript Check
+        run: pnpm typecheck
+
+  docker-compose-check:
+    name: Docker Compose Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy sample env
+        run: cp .env.example .env
+
+      - name: Validate Production Compose
+        run: docker compose -f compose.yml config --quiet
+
+      - name: Validate Dev Compose
+        run: docker compose -f dev.compose.yml config --quiet
