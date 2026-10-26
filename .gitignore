@@ -44,7 +44,7 @@ Thumbs.db
 desktop.ini
 
 # Logs & runtime data
-logs/
+/logs/
 *.log
 mongo-data/
 redis-data/
