@@ -4,6 +4,7 @@
 // ===================
 
 export * from './admin.types'
+export * from './agent.types'
 export * from './alert.types'
 export * from './auth.types'
 export * from './common.types'

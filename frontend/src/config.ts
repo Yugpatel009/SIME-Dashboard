@@ -33,6 +33,16 @@ export const API_ENDPOINTS = {
     DEACTIVATE: (id: string) => `/${API_VERSION}/admin/users/${id}/deactivate`,
     ACTIVATE: (id: string) => `/${API_VERSION}/admin/users/${id}/activate`,
   },
+  AGENTS: {
+    LIST: `/${API_VERSION}/agents`,
+    REGISTER: `/${API_VERSION}/agents/register`,
+    STATS: `/${API_VERSION}/agents/stats`,
+    BY_ID: (id: string) => `/${API_VERSION}/agents/${id}`,
+    UPDATE: (id: string) => `/${API_VERSION}/agents/${id}`,
+    REVOKE: (id: string) => `/${API_VERSION}/agents/${id}/revoke`,
+    ROTATE_TOKEN: (id: string) => `/${API_VERSION}/agents/${id}/rotate-token`,
+    DELETE: (id: string) => `/${API_VERSION}/agents/${id}`,
+  },
   DASHBOARD: {
     OVERVIEW: `/${API_VERSION}/dashboard`,
     TIMELINE: `/${API_VERSION}/dashboard/timeline`,
@@ -76,6 +86,13 @@ export const QUERY_KEYS = {
   AUTH: {
     ALL: ['auth'] as const,
     ME: () => [...QUERY_KEYS.AUTH.ALL, 'me'] as const,
+  },
+  AGENTS: {
+    ALL: ['agents'] as const,
+    LIST: (page: number, size: number, status?: string, search?: string) =>
+      [...QUERY_KEYS.AGENTS.ALL, 'list', { page, size, status, search }] as const,
+    STATS: () => [...QUERY_KEYS.AGENTS.ALL, 'stats'] as const,
+    BY_ID: (id: string) => [...QUERY_KEYS.AGENTS.ALL, 'detail', id] as const,
   },
   DASHBOARD: {
     ALL: ['dashboard'] as const,
@@ -129,6 +146,7 @@ export const ROUTES = {
   ALERTS: '/alerts',
   RULES: '/rules',
   SCENARIOS: '/scenarios',
+  AGENTS: '/agents',
   SETTINGS: '/settings',
   ADMIN_USERS: '/admin/users',
 } as const
@@ -197,6 +215,13 @@ export const SCENARIO_STATUS_LABELS: Record<string, string> = {
   stopped: 'Stopped',
   paused: 'Paused',
   error: 'Error',
+}
+
+export const AGENT_STATUS_LABELS: Record<string, string> = {
+  online: 'Online',
+  stale: 'Stale',
+  offline: 'Offline',
+  revoked: 'Revoked',
 }
 
 export type ApiEndpoint = typeof API_ENDPOINTS

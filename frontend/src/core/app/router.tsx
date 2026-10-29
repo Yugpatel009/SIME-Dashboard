@@ -63,6 +63,10 @@ const routes: RouteObject[] = [
             lazy: () => import('@/routes/scenarios'),
           },
           {
+            path: ROUTES.AGENTS,
+            lazy: () => import('@/routes/agents'),
+          },
+          {
             path: ROUTES.SETTINGS,
             lazy: () => import('@/routes/settings'),
           },

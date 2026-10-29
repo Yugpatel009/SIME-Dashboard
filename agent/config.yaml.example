@@ -1,0 +1,40 @@
+# ==============================================================================
+# SIEM Autonomous Linux Log Agent Configuration
+# ==============================================================================
+#
+# Replace the placeholder values below with your lab environment details.
+# To register a new agent and obtain an agent_token:
+#   1. Navigate to the SIEM Dashboard at http://<SIEM_IP>:8431/agents
+#   2. Click "Register New Agent"
+#   3. Enter your hostname and environment name
+#   4. Copy the one-time agent token and paste it below
+# ==============================================================================
+
+# URL of the SIEM API (host-only IP of the Windows host running Docker)
+# e.g., http://192.168.56.1:8431/api/v1 or https://192.168.56.1:8431/api/v1
+siem_url: "http://192.168.56.1:8431/api/v1"
+
+# Unique identifier assigned during registration (e.g., agt_a1b2c3d4e5f6)
+agent_id: "agt_example123456"
+
+# One-time secret bearer token generated upon agent registration
+# Format: siem_agt_<agent_id>_<secret_key>
+agent_token: "siem_agt_example123456_0123456789abcdef0123456789abcdef"
+
+# Path to the Linux authentication log file to monitor
+auth_log_path: "/var/log/auth.log"
+
+# Heartbeat interval in seconds (default: 30 seconds)
+heartbeat_interval: 30
+
+# Path to local SQLite spool database for offline event persistence
+spool_db_path: "spool.db"
+
+# Agent release version
+agent_version: "1.0.0"
+
+# Optional hostname override (defaults to system hostname if omitted)
+# hostname: "kali-attacker"
+
+# SSL/TLS verification (set to False only for self-signed certificates in isolated labs)
+verify_ssl: true

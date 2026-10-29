@@ -15,6 +15,7 @@ Key exports:
 Connects to:
   models/LogEvent.py - imports SourceType for the registry
   controllers/log_ctrl.py - calls normalize before persisting an event
+  controllers/agent_ctrl.py - calls normalize for agent-submitted events
   scenarios/runner.py - calls normalize for each playbook event
 """
 
@@ -57,10 +58,8 @@ def _extract_common(raw: dict[str, Any]) -> dict[str, Any]:
     Pull fields shared across all log formats into a base dict
     """
     return {
-        "timestamp": raw.get("timestamp",
-                             datetime.now(UTC)),
-        "source_type": raw.get("source_type",
-                               SourceType.GENERIC),
+        "timestamp": raw.get("timestamp", datetime.now(UTC)),
+        "source_type": raw.get("source_type", SourceType.GENERIC),
         "source_ip": raw.get("source_ip"),
         "dest_ip": raw.get("dest_ip"),
         "source_port": raw.get("source_port"),
@@ -68,6 +67,8 @@ def _extract_common(raw: dict[str, Any]) -> dict[str, Any]:
         "event_type": raw.get("event_type"),
         "hostname": raw.get("hostname"),
         "username": raw.get("username"),
+        "agent_id": raw.get("agent_id"),
+        "event_id": raw.get("event_id"),
         "raw": raw,
         "normalized": {},
     }

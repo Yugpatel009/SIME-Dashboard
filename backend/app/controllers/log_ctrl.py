@@ -16,6 +16,7 @@ Connects to:
   engine/normalizer.py - calls normalize
   engine/severity.py - calls classify
   core/streaming.py - calls publish_event, sse_generator
+  core/decorators/agent_auth.py - calls resolve_agent_optional
   config.py - reads LOG_STREAM_KEY
   routes/logs.py - called from route handlers
 """
@@ -25,6 +26,7 @@ from typing import Any
 from flask import Response, g
 
 from app.config import settings
+from app.core.decorators.agent_auth import resolve_agent_optional
 from app.core.streaming import publish_event, sse_generator
 from app.engine.normalizer import normalize
 from app.engine.severity import classify
@@ -63,9 +65,17 @@ def get_log(log_id: str) -> LogEvent:
 
 def ingest_log() -> LogEvent:
     """
-    Normalize, classify, persist, and publish a log event
+    Normalize, classify, persist, and publish a log event.
+    If an agent token is provided, binds the event to that agent.
     """
     raw = g.validated.model_dump(exclude_none = True)
+
+    agent = resolve_agent_optional()
+    if agent is not None:
+        raw["agent_id"] = agent.agent_id
+        if not raw.get("hostname"):
+            raw["hostname"] = agent.hostname
+        agent.record_event()
 
     normalized = normalize(raw)
     severity = classify(normalized)
@@ -87,6 +97,7 @@ def ingest_log() -> LogEvent:
             "dest_ip": event.dest_ip,
             "hostname": event.hostname,
             "username": event.username,
+            "agent_id": event.agent_id,
         },
     )
 

@@ -4,6 +4,7 @@
 // ===================
 
 export * from './useAdmin'
+export * from './useAgents'
 export * from './useAlerts'
 export * from './useAuth'
 export * from './useDashboard'

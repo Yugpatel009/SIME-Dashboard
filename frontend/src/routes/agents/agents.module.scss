@@ -1,0 +1,451 @@
+// ===================
+// ©AngelaMos | 2026
+// agents.module.scss
+// ===================
+
+@use '@/styles' as *;
+
+.page {
+  @include flex-column;
+  gap: $space-5;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-4;
+
+  @include breakpoint-down('lg') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-down('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statCard {
+  background-color: $bg-surface-100;
+  border: 1px solid $border-default;
+  border-radius: $radius-md;
+  padding: $space-4 $space-5;
+  @include flex-column;
+  gap: $space-1;
+}
+
+.statValue {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  color: $text-default;
+  line-height: $line-height-tight;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $text-lighter;
+  text-transform: uppercase;
+  letter-spacing: $tracking-wide;
+}
+
+.toolbar {
+  @include flex-between;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex: 1;
+  max-width: 600px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  flex: 1;
+
+  .searchIcon {
+    position: absolute;
+    left: $space-3;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-lighter;
+    font-size: $font-size-sm;
+    pointer-events: none;
+  }
+
+  .searchInput {
+    width: 100%;
+    padding: $space-2 $space-3 $space-2 calc(#{$space-3} + 20px);
+    background-color: $bg-surface-100;
+    border: 1px solid $border-default;
+    border-radius: $radius-sm;
+    color: $text-default;
+    font-size: $font-size-sm;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+    }
+  }
+}
+
+.statusSelect {
+  padding: $space-2 $space-3;
+  background-color: $bg-surface-100;
+  border: 1px solid $border-default;
+  border-radius: $radius-sm;
+  color: $text-default;
+  font-size: $font-size-sm;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+  }
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-4;
+  background-color: $accent;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  @include transition-fast;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
+
+.tableWrapper {
+  background-color: $bg-surface-100;
+  border: 1px solid $border-default;
+  border-radius: $radius-md;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  text-align: left;
+  padding: $space-3 $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $text-lighter;
+  text-transform: uppercase;
+  letter-spacing: $tracking-wide;
+  border-bottom: 1px solid $border-default;
+  background-color: $bg-surface-75;
+  white-space: nowrap;
+}
+
+.td {
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  color: $text-default;
+  border-bottom: 1px solid $border-muted;
+  white-space: nowrap;
+}
+
+.agentNameCell {
+  @include flex-column;
+  gap: 2px;
+
+  .agentTitle {
+    font-weight: $font-weight-medium;
+    color: $text-default;
+  }
+
+  .agentId {
+    font-size: $font-size-xs;
+    color: $text-lighter;
+    font-family: monospace;
+  }
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1-5;
+  padding: $space-0-5 $space-2;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: capitalize;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &.online {
+    color: #4ade80;
+    background-color: hsl(142 71% 45% / 12%);
+    .dot {
+      background-color: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+    }
+  }
+
+  &.stale {
+    color: #facc15;
+    background-color: hsl(48 96% 53% / 12%);
+    .dot {
+      background-color: #eab308;
+    }
+  }
+
+  &.offline {
+    color: $text-muted;
+    background-color: hsl(215 16% 47% / 12%);
+    .dot {
+      background-color: $text-muted;
+    }
+  }
+
+  &.revoked {
+    color: #f87171;
+    background-color: hsl(0 84% 60% / 12%);
+    .dot {
+      background-color: #ef4444;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $space-1-5;
+}
+
+.actionBtn {
+  @include flex-center;
+  width: 28px;
+  height: 28px;
+  background-color: transparent;
+  border: 1px solid $border-default;
+  border-radius: $radius-sm;
+  color: $text-light;
+  cursor: pointer;
+  @include transition-fast;
+
+  &:hover {
+    border-color: $border-strong;
+    color: $text-default;
+    background-color: $bg-surface-200;
+  }
+
+  &.danger:hover {
+    border-color: hsl(0 84% 60% / 40%);
+    color: #f87171;
+    background-color: hsl(0 84% 60% / 10%);
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: $space-8;
+  color: $text-lighter;
+  font-size: $font-size-sm;
+}
+
+.skeleton {
+  height: 48px;
+  background-color: $bg-surface-200;
+}
+
+.pagination {
+  @include flex-center;
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+.pageBtn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  background-color: $bg-surface-100;
+  border: 1px solid $border-default;
+  border-radius: $radius-sm;
+  color: $text-default;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background-color: $bg-surface-200;
+  }
+}
+
+.pageInfo {
+  font-size: $font-size-xs;
+  color: $text-lighter;
+}
+
+// Modal styles
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $space-4;
+}
+
+.modal {
+  background-color: $bg-surface-100;
+  border: 1px solid $border-default;
+  border-radius: $radius-md;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: $space-5;
+  @include flex-column;
+  gap: $space-4;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modalHeader {
+  @include flex-between;
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-lg;
+    color: $text-default;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    color: $text-lighter;
+    cursor: pointer;
+    font-size: $font-size-lg;
+    padding: $space-1;
+    &:hover { color: $text-default; }
+  }
+}
+
+.formGroup {
+  @include flex-column;
+  gap: $space-1-5;
+
+  label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $text-lighter;
+    text-transform: uppercase;
+    letter-spacing: $tracking-wide;
+  }
+
+  input, select {
+    padding: $space-2-5 $space-3;
+    background-color: $bg-surface-75;
+    border: 1px solid $border-default;
+    border-radius: $radius-sm;
+    color: $text-default;
+    font-size: $font-size-sm;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+    }
+  }
+}
+
+.tokenAlert {
+  background-color: hsl(38 92% 50% / 10%);
+  border: 1px solid hsl(38 92% 50% / 30%);
+  border-radius: $radius-sm;
+  padding: $space-3 $space-4;
+  color: #fef08a;
+  font-size: $font-size-xs;
+  line-height: $line-height-relaxed;
+
+  strong {
+    color: #fde047;
+  }
+}
+
+.tokenBox {
+  background-color: #0b0f19;
+  border: 1px solid #1e293b;
+  border-radius: $radius-sm;
+  padding: $space-3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+
+  code {
+    font-family: monospace;
+    font-size: $font-size-xs;
+    color: #38bdf8;
+    word-break: break-all;
+  }
+
+  .copyBtn {
+    background-color: #1e293b;
+    border: none;
+    color: $text-light;
+    padding: $space-1-5 $space-2-5;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: #334155;
+      color: white;
+    }
+  }
+}
+
+.codeSnippet {
+  background-color: #0b0f19;
+  border: 1px solid #1e293b;
+  border-radius: $radius-sm;
+  padding: $space-3;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: pre;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: $space-2 0;
+  border-bottom: 1px solid $border-muted;
+  font-size: $font-size-sm;
+
+  .detailLabel {
+    color: $text-lighter;
+  }
+
+  .detailVal {
+    color: $text-default;
+    font-family: monospace;
+  }
+}

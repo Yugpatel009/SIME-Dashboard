@@ -17,7 +17,7 @@ RUN pip install uv
 
 COPY backend/pyproject.toml .
 
-RUN uv pip install .
+RUN uv pip install ".[dev]"
 
 COPY backend/ .
 

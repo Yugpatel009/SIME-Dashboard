@@ -5,7 +5,7 @@ LogEvent.py
 MongoEngine model for ingested log events
 
 Stores normalized log events from all source types with fields for
-network context, severity, MITRE mappings, and scenario linkage.
+network context, severity, MITRE mappings, scenario linkage, and agent identity.
 Provides class methods for search, pivot queries, and MongoDB
 aggregation pipelines used by dashboard endpoints.
 
@@ -19,6 +19,7 @@ Connects to:
   config.py - reads DEFAULT_PAGE_SIZE, TIMELINE_*, TOP_SOURCES_LIMIT
   controllers/log_ctrl.py, controllers/dashboard_ctrl.py - query methods
   controllers/rule_ctrl.py - reads events for rule testing
+  controllers/agent_ctrl.py - persists events submitted by agents
   engine/correlation.py - event data passed to evaluate_rule
 """
 
@@ -68,8 +69,7 @@ class LogEvent(BaseDocument):
     Log event document with query and aggregation methods
     """
     meta: dict[str, Any] = {  # noqa: RUF012
-        "collection":
-        "log_events",
+        "collection": "log_events",
         "ordering": ["-timestamp"],
         "indexes": [
             "timestamp",
@@ -81,6 +81,12 @@ class LogEvent(BaseDocument):
             "hostname",
             "event_type",
             "scenario_run_id",
+            "agent_id",
+            {
+                "fields": ["agent_id", "event_id"],
+                "unique": True,
+                "sparse": True,
+            },
         ],
     }
 
@@ -109,9 +115,11 @@ class LogEvent(BaseDocument):
     mitre_technique = StringField()
     scenario_run_id = ObjectIdField()
     matched_alert_ids = ListField(ObjectIdField())
+    agent_id = StringField()
+    event_id = StringField()
 
     @classmethod
-    def create_event(cls, **fields: Any) -> LogEvent:
+    def create_event(cls, **fields: Any) -> "LogEvent":
         """
         Create and persist a new log event
         """
